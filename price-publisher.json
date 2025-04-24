@@ -1,0 +1,11 @@
+{
+    "title": "Demo Car Price Publisher",
+    "name": "demo-car-price-publisher",
+    "caption": "Demo Car Price Publisher Fake Prices",
+    "service": true,
+    "type": "node",
+    "details": {
+        "path": "C:\\Users\\AleksandarDimitrov\\OneDrive - INTEROP.IO UK LIMITED\\Documents\\code\\practice\\price-publisher-streams\\price-publisher.js",
+        "showConsole": true
+    }
+}

@@ -20,16 +20,41 @@ const initializeIOConnect = async () => {
 initializeIOConnect()
 .then((io) => {
     console.log(`io.Connect version: ${io.version}`);
+    let carMakeFilter = "BMW";
+
+    const streamDefinition = {
+        name: "Demo.LastTradesStream",
+        displayName: "Cars - Last car price changes",
+        returns: "String carMake, Double lastPrice"
+    };
+
+    let options = {
+        subscriptionAddedHandler: (subscription) => {
+            console.log("NEW SUBSCRIPTION ADDED!");
+            console.log(subscription);
+            console.log(subscription.arguments);
+            carMakeFilter = subscription.arguments.carMake;
+        }
+    }
     
-    io.interop.createStream("Demo.LastTradesStream").
-    then((stream) => {
+    io
+    .interop
+    .createStream(streamDefinition, options)
+    .then((stream) => {
+
         setInterval(() => {
             const lastCarPrice = {
                 carMake: instruments[random(0, instruments.length - 1)],
                 lastPrice: random(10, 1000)
             }
-        
-            stream.push(lastCarPrice);
+
+            if (lastCarPrice.carMake == carMakeFilter) {
+                console.log("================================== PUBLISHING TO STREAM: ", lastCarPrice.carMake);
+                stream.push(lastCarPrice);
+                return;
+            }
+            console.log("SKIPPING PUBLISHING TO STREAM: ", lastCarPrice.carMake);
+
         }, 1000)
     });
 })
